@@ -60,6 +60,10 @@ class AddCityView extends GetView<SearchInternshipController> {
               onChanged: (String? value) {
                 controller.searchFromCities();
               },
+              onFieldSubmitted: (String value){
+                controller.searchFromCities();
+                controller.searchedCities.isEmpty ? Get.snackbar(LocaleKeys.notFound.tr, LocaleKeys.cityNotFound.tr) : () {};
+              },
               controller: controller.cityController,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
@@ -121,14 +125,14 @@ class AddCityView extends GetView<SearchInternshipController> {
                             return Checkbox(
                                 activeColor: Colors.lightBlue,
                                 value: controller.selectedCities.contains(
-                                    controller.cities[index]),
+                                    controller.searchedCities[index]),
                                 onChanged: (bool? isSelected) {
                                   if (isSelected!) {
                                     controller.selectedCities.add(
-                                        controller.cities[index]);
+                                        controller.searchedCities[index]);
                                   } else {
                                     controller.selectedCities.remove(
-                                        controller.cities[index]);
+                                        controller.searchedCities[index]);
                                   }
                                 }
                             );

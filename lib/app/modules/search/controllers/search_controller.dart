@@ -70,9 +70,17 @@ class SearchInternshipController extends GetxController {
   void searchFromInternships(){
     String searchText = searchTextController.text;
     searchedInternshipData.value = [];
-    for(InternshipData data in internshipData){
-      if(data.title!.toLowerCase() == searchText.toLowerCase() || data.title!.toLowerCase().contains(searchText.toLowerCase())){
-        searchedInternshipData.add(data);
+    if(filteredInternshipData.isNotEmpty){
+      for(InternshipData data in filteredInternshipData){
+        if(data.title!.toLowerCase() == searchText.toLowerCase() || data.title!.toLowerCase().contains(searchText.toLowerCase())){
+          searchedInternshipData.add(data);
+        }
+      }
+    } else{
+      for(InternshipData data in internshipData){
+        if(data.title!.toLowerCase() == searchText.toLowerCase() || data.title!.toLowerCase().contains(searchText.toLowerCase())){
+          searchedInternshipData.add(data);
+        }
       }
     }
   }
@@ -172,6 +180,7 @@ class SearchInternshipController extends GetxController {
   void clearAll(){
     selectedMonthDuration.value = 0;
     filteredInternshipData.value = [];
+    searchedInternshipData.value = [];
     allFilters.value = [];
     selectedProfiles.value = [];
     selectedCities.value = [];

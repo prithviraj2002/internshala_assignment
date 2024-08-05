@@ -59,6 +59,11 @@ class AddProfileView extends GetView<SearchInternshipController> {
               onChanged: (String? value) {
                 controller.searchFromProfiles();
               },
+              onFieldSubmitted: (String value) {
+                controller.searchFromProfiles();
+                controller.searchedProfiles.isEmpty ? Get.snackbar(
+                    LocaleKeys.notFound.tr, LocaleKeys.profileNotFound.tr) : () {};
+              },
               controller: controller.profileController,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
@@ -121,14 +126,14 @@ class AddProfileView extends GetView<SearchInternshipController> {
                             return Checkbox(
                                 activeColor: Colors.lightBlue,
                                 value: controller.selectedProfiles.contains(
-                                    controller.profiles[index]),
+                                    controller.searchedProfiles[index]),
                                 onChanged: (bool? isSelected) {
                                   if (isSelected!) {
                                     controller.selectedProfiles.add(
-                                        controller.profiles[index]);
+                                        controller.searchedProfiles[index]);
                                   } else {
                                     controller.selectedProfiles.remove(
-                                        controller.profiles[index]);
+                                        controller.searchedProfiles[index]);
                                   }
                                 }
                             );

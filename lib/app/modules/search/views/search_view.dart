@@ -31,6 +31,13 @@ class SearchView extends GetView<SearchInternshipController> {
                     onChanged: (String? value) {
                       controller.searchFromInternships();
                     },
+                    onFieldSubmitted: (String value){
+                      controller.searchedInternshipData.isEmpty
+                          ? Get.snackbar(
+                          LocaleKeys.notFound.tr, LocaleKeys.internshipNotFound.tr)
+                          : () {};
+                      controller.isSearch.value = false;
+                    },
                     controller: controller.searchTextController,
                     decoration: InputDecoration(
                         suffixIcon: IconButton(onPressed: () {
@@ -166,6 +173,21 @@ class SearchView extends GetView<SearchInternshipController> {
             }
             else if(controller.allFilters.isNotEmpty && controller.filteredInternshipData.isEmpty){
               return Expanded(child: Center(child: EmptyWidget(title: LocaleKeys.notFound.tr,),));
+            }
+            else if(controller.filteredInternshipData.isNotEmpty && controller.searchedInternshipData.isNotEmpty){
+              return Expanded(
+                  child: ListView.separated(
+                      shrinkWrap: true,
+                      itemBuilder: (ctx, index) {
+                        return InternshipCard(
+                          internshipData: controller
+                              .searchedInternshipData[index],
+                        );
+                      },
+                      separatorBuilder: (ctx, index) {
+                        return const SizedBox(height: 12,);
+                      },
+                      itemCount: controller.searchedInternshipData.length));
             }
             else if (controller.internshipData.isNotEmpty &&
                 controller.searchedInternshipData.isEmpty) {
